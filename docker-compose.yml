@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: goalstride-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    environment:
+      - FLASK_ENV=production
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: goalstride-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
