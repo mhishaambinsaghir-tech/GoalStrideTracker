@@ -4,6 +4,10 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services import goal_service
 from utils.validators import validate_goal
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 goals_bp = Blueprint("goals", __name__, url_prefix="/api/goals")
 
@@ -34,10 +38,13 @@ def create_goal():
     """POST /api/goals — create a new goal."""
     user_id = get_jwt_identity()
     data = request.get_json(silent=True)
+    logger.info(f"Received create goal request: {data}")
+
     if not data:
         return jsonify({"error": "Request body must be valid JSON."}), 400
 
     errors = validate_goal(data)
+    logger.info(f"Validation errors: {errors}")
     if errors:
         return jsonify({"errors": errors}), 422
 

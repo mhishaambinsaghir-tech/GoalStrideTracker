@@ -21,15 +21,16 @@ def get_entry_by_id(entry_id: int, user_id: int) -> dict | None:
 
 def create_entry(data: dict, user_id: int) -> dict | None:
     # Ensure goal exists and belongs to user
-    goal = Goal.query.filter_by(id=data["goal_id"], user_id=user_id).first()
+    goal_id = int(data["goal_id"])
+    goal = Goal.query.filter_by(id=goal_id, user_id=user_id).first()
     if not goal:
         return None
 
     entry = ProgressEntry(
-        goal_id=data["goal_id"],
-        entry_date=date.fromisoformat(data["entry_date"]),
+        goal_id=goal_id,
+        entry_date=date.fromisoformat(str(data["entry_date"])),
         notes=data.get("notes", "").strip() or None,
-        duration_minutes=data.get("duration_minutes", 0) or 0,
+        duration_minutes=int(data.get("duration_minutes", 0)) or 0,
     )
     db.session.add(entry)
 
@@ -47,11 +48,11 @@ def update_entry(entry_id: int, data: dict, user_id: int) -> dict | None:
         return None
 
     if "entry_date" in data:
-        entry.entry_date = date.fromisoformat(data["entry_date"])
+        entry.entry_date = date.fromisoformat(str(data["entry_date"]))
     if "notes" in data:
         entry.notes = data["notes"].strip() or None
     if "duration_minutes" in data:
-        entry.duration_minutes = data["duration_minutes"] or 0
+        entry.duration_minutes = int(data["duration_minutes"]) or 0
 
     db.session.commit()
     return entry.to_dict()
