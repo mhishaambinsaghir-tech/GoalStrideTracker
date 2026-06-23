@@ -16,7 +16,7 @@ progress_bp = Blueprint("progress", __name__, url_prefix="/api/progress")
 @jwt_required()
 def list_entries():
     """GET /api/progress?goal_id=<id> — list entries, optionally filtered."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     goal_id = request.args.get("goal_id", type=int)
     entries = progress_service.get_entries(user_id=user_id, goal_id=goal_id)
     return jsonify({"data": entries, "count": len(entries)}), 200
@@ -26,7 +26,7 @@ def list_entries():
 @jwt_required()
 def heatmap():
     """GET /api/progress/heatmap — date→minutes map for calendar view."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = progress_service.get_heatmap_data(user_id=user_id)
     return jsonify({"data": data}), 200
 
@@ -35,7 +35,7 @@ def heatmap():
 @jwt_required()
 def get_entry(entry_id):
     """GET /api/progress/:id — return a single entry."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     entry = progress_service.get_entry_by_id(entry_id, user_id)
     if not entry:
         return jsonify({"error": f"Progress entry {entry_id} not found."}), 404
@@ -46,7 +46,7 @@ def get_entry(entry_id):
 @jwt_required()
 def create_entry():
     """POST /api/progress — log a new progress entry."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json(silent=True)
     logger.info(f"Received create progress request: {data}")
 
@@ -69,7 +69,7 @@ def create_entry():
 @jwt_required()
 def update_entry(entry_id):
     """PUT /api/progress/:id — update a progress entry."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "Request body must be valid JSON."}), 400
@@ -85,7 +85,7 @@ def update_entry(entry_id):
 @jwt_required()
 def delete_entry(entry_id):
     """DELETE /api/progress/:id — delete a progress entry."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     deleted = progress_service.delete_entry(entry_id, user_id)
     if not deleted:
         return jsonify({"error": f"Progress entry {entry_id} not found."}), 404

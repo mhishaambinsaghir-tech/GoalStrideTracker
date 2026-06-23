@@ -16,7 +16,7 @@ goals_bp = Blueprint("goals", __name__, url_prefix="/api/goals")
 @jwt_required()
 def list_goals():
     """GET /api/goals — return all goals."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     goals = goal_service.get_all_goals(user_id)
     return jsonify({"data": goals, "count": len(goals)}), 200
 
@@ -25,7 +25,7 @@ def list_goals():
 @jwt_required()
 def get_goal(goal_id):
     """GET /api/goals/:id — return one goal with its progress entries."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     goal = goal_service.get_goal_by_id(goal_id, user_id)
     if not goal:
         return jsonify({"error": f"Goal {goal_id} not found."}), 404
@@ -36,7 +36,7 @@ def get_goal(goal_id):
 @jwt_required()
 def create_goal():
     """POST /api/goals — create a new goal."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json(silent=True)
     logger.info(f"Received create goal request: {data}")
 
@@ -56,7 +56,7 @@ def create_goal():
 @jwt_required()
 def update_goal(goal_id):
     """PUT /api/goals/:id — update a goal."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "Request body must be valid JSON."}), 400
@@ -76,7 +76,7 @@ def update_goal(goal_id):
 @jwt_required()
 def delete_goal(goal_id):
     """DELETE /api/goals/:id — delete a goal and all its progress entries."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     deleted = goal_service.delete_goal(goal_id, user_id)
     if not deleted:
         return jsonify({"error": f"Goal {goal_id} not found."}), 404
@@ -87,6 +87,6 @@ def delete_goal(goal_id):
 @jwt_required()
 def stats():
     """GET /api/goals/stats — aggregated dashboard statistics."""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = goal_service.get_stats(user_id)
     return jsonify({"data": data}), 200
