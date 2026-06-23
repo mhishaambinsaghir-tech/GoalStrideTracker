@@ -26,6 +26,11 @@ def validate_goal(data: dict) -> list[str]:
         if not isinstance(pct, int) or not (0 <= pct <= 100):
             errors.append("'completion_percent' must be an integer between 0 and 100.")
 
+    target_days = data.get("target_days")
+    if target_days is not None:
+        if not isinstance(target_days, int) or target_days < 1:
+            errors.append("'target_days' must be a positive integer.")
+
     return errors
 
 
