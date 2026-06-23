@@ -23,12 +23,20 @@ def validate_goal(data: dict) -> list[str]:
 
     pct = data.get("completion_percent")
     if pct is not None:
-        if not isinstance(pct, int) or not (0 <= pct <= 100):
+        try:
+            pct = int(pct)
+            if not (0 <= pct <= 100):
+                raise ValueError()
+        except (ValueError, TypeError):
             errors.append("'completion_percent' must be an integer between 0 and 100.")
 
     target_days = data.get("target_days")
     if target_days is not None:
-        if not isinstance(target_days, int) or target_days < 1:
+        try:
+            target_days = int(target_days)
+            if target_days < 1:
+                raise ValueError()
+        except (ValueError, TypeError):
             errors.append("'target_days' must be a positive integer.")
 
     return errors
@@ -38,8 +46,14 @@ def validate_progress_entry(data: dict) -> list[str]:
     """Return a list of validation error messages for a ProgressEntry payload."""
     errors = []
 
-    if not data.get("goal_id"):
+    goal_id = data.get("goal_id")
+    if not goal_id:
         errors.append("'goal_id' is required.")
+    else:
+        try:
+            int(goal_id)
+        except (ValueError, TypeError):
+            errors.append("'goal_id' must be a valid integer.")
 
     entry_date = data.get("entry_date")
     if not entry_date:
@@ -52,7 +66,11 @@ def validate_progress_entry(data: dict) -> list[str]:
 
     duration = data.get("duration_minutes")
     if duration is not None:
-        if not isinstance(duration, int) or duration < 0:
+        try:
+            duration = int(duration)
+            if duration < 0:
+                raise ValueError()
+        except (ValueError, TypeError):
             errors.append("'duration_minutes' must be a non-negative integer.")
 
     return errors

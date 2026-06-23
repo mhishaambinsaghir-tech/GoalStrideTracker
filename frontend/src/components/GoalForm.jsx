@@ -25,7 +25,10 @@ export default function GoalForm({ initial, onSave, onClose }) {
     setSaving(true);
     setError('');
     try {
-      await onSave(form);
+      await onSave({
+        ...form,
+        target_days: parseInt(form.target_days, 10),
+      });
       onClose();
     } catch (err) {
       setError(err.message);
@@ -80,7 +83,7 @@ export default function GoalForm({ initial, onSave, onClose }) {
                 className="input mt-1"
                 placeholder="e.g. 10"
                 value={form.target_days}
-                onChange={e => setForm(f => ({ ...f, target_days: e.target.value ? parseInt(e.target.value, 10) : '' }))}
+                onChange={e => setForm(f => ({ ...f, target_days: parseInt(e.target.value || 1, 10) }))}
               />
             </div>
           </div>

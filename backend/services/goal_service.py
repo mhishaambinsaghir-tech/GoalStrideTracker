@@ -34,7 +34,7 @@ def create_goal(data: dict, user_id: int) -> dict:
         title=data["title"].strip(),
         description=data.get("description", "").strip() or None,
         status=data.get("status", "active"),
-        target_days=data.get("target_days", 10),
+        target_days=int(data.get("target_days", 10)),
     )
     db.session.add(goal)
     db.session.commit()
@@ -53,7 +53,7 @@ def update_goal(goal_id: int, data: dict, user_id: int) -> dict | None:
     if "status" in data:
         goal.status = data["status"]
     if "target_days" in data:
-        goal.target_days = data["target_days"]
+        goal.target_days = int(data["target_days"])
 
     from datetime import datetime, timezone
     goal.updated_at = datetime.now(timezone.utc)
