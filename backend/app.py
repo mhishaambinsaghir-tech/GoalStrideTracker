@@ -1,9 +1,13 @@
 """Flask application factory."""
 
 import os
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 from config import get_config
 from database import init_db
@@ -34,6 +38,14 @@ def create_app(config_override=None):
     # Enable CORS — allow React dev server
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+    # Debug log every request
+    @app.before_request
+    def log_request_info():
+        logger.info(f"📥 {request.method} {request.url}")
+        logger.info(f"📋 Headers: {dict(request.headers)}")
+        if request.is_json:
+            logger.info(f"📦 JSON: {request.get_json(silent=True)}")
+
     # Init JWT
     jwt = JWTManager(app)
 
@@ -48,7 +60,13 @@ def create_app(config_override=None):
 
     @app.route("/api/health")
     def health():
+        logger.info("✅ Health check hit!")
         return {"status": "ok", "message": "GoalStrideTracker API is running."}, 200
+
+    @app.errorhandler(Exception)
+    def handle_exception(e):
+        logger.exception(f"❌ Unhandled exception: {e}")
+        return jsonify({"error": "Internal server error"}), 500
 
     return app
 
