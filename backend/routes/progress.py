@@ -4,6 +4,10 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services import progress_service
 from utils.validators import validate_progress_entry
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 progress_bp = Blueprint("progress", __name__, url_prefix="/api/progress")
 
@@ -44,10 +48,13 @@ def create_entry():
     """POST /api/progress — log a new progress entry."""
     user_id = get_jwt_identity()
     data = request.get_json(silent=True)
+    logger.info(f"Received create progress request: {data}")
+
     if not data:
         return jsonify({"error": "Request body must be valid JSON."}), 400
 
     errors = validate_progress_entry(data)
+    logger.info(f"Validation errors: {errors}")
     if errors:
         return jsonify({"errors": errors}), 422
 
