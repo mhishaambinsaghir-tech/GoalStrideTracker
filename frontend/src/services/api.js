@@ -19,16 +19,19 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
+    // Preserve the original error response so components can use it
     const message =
       err?.response?.data?.error ||
       err?.response?.data?.errors?.join(', ') ||
       err.message ||
       'An unknown error occurred.';
-    return Promise.reject(new Error(message));
+    const enhancedError = new Error(message);
+    enhancedError.response = err.response;
+    return Promise.reject(enhancedError);
   }
 );
 
-// ── Goals ─────────────────────────────────────────────────────────────────
+// ── Goals ──────────────────────────────────────────────────────────
 export const getGoals        = () => api.get('/goals').then(r => r.data.data);
 export const getGoal         = (id) => api.get(`/goals/${id}`).then(r => r.data.data);
 export const createGoal      = (data) => api.post('/goals', data).then(r => r.data.data);
@@ -36,7 +39,7 @@ export const updateGoal      = (id, data) => api.put(`/goals/${id}`, data).then(
 export const deleteGoal      = (id) => api.delete(`/goals/${id}`).then(r => r.data);
 export const getStats        = () => api.get('/goals/stats').then(r => r.data.data);
 
-// ── Progress ──────────────────────────────────────────────────────────────
+// ── Progress ───────────────────────────────────────────────────────
 export const getProgress     = (goalId) =>
   api.get('/progress', { params: goalId ? { goal_id: goalId } : {} }).then(r => r.data.data);
 export const createProgress  = (data) => api.post('/progress', data).then(r => r.data.data);
