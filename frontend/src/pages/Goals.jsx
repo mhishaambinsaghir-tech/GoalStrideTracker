@@ -39,12 +39,12 @@ export default function Goals() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gradient">Goals</h1>
-          <p className="text-slate-400 mt-1">{goals.length} goals total</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gradient">Goals</h1>
+          <p className="text-slate-400 mt-1 text-sm sm:text-base">{goals.length} goals total</p>
         </div>
-        <button className="btn-primary" onClick={() => { setEditing(null); setShowForm(true); }}>
+        <button className="btn-primary justify-center sm:justify-start" onClick={() => { setEditing(null); setShowForm(true); }}>
           <Plus size={16} /> New Goal
         </button>
       </div>
@@ -60,12 +60,12 @@ export default function Goals() {
             onChange={e => setSearch(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto pb-1">
           {FILTERS.map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`btn ${filter === f ? 'btn-primary' : 'btn-ghost'} capitalize`}
+              className={`btn ${filter === f ? 'btn-primary' : 'btn-ghost'} capitalize flex-shrink-0`}
             >
               {f}
             </button>
@@ -90,7 +90,7 @@ export default function Goals() {
           )}
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map(goal => (
             <GoalCard
               key={goal.id}

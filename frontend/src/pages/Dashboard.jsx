@@ -44,12 +44,12 @@ export default function Dashboard() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gradient">Dashboard</h1>
-          <p className="text-slate-400 mt-1">Track your learning journey, one day at a time.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gradient">Dashboard</h1>
+          <p className="text-slate-400 mt-1 text-sm sm:text-base">Track your learning journey, one day at a time.</p>
         </div>
-        <Link to="/goals" className="btn-primary">
+        <Link to="/goals" className="btn-primary justify-center sm:justify-start">
           <Plus size={16} /> New Goal
         </Link>
       </div>

@@ -64,10 +64,10 @@ export default function GoalDetail() {
 
       {/* Goal header */}
       <div className="card">
-        <div className="flex items-start justify-between gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-slate-100">{goal.title}</h1>
+            <div className="flex flex-wrap items-center gap-3 mb-2">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-100">{goal.title}</h1>
               <span className={statusClass(goal.status)}>{goal.status}</span>
             </div>
             {goal.description && (
@@ -85,7 +85,7 @@ export default function GoalDetail() {
         </div>
 
         {/* Stats row */}
-        <div className="flex flex-wrap gap-6 border-t border-dark-border pt-4">
+        <div className="flex flex-wrap gap-4 sm:gap-6 border-t border-dark-border pt-4">
           <div className="flex items-center gap-2 text-sm">
             <Target size={16} className="text-primary-400" />
             <span className="text-slate-400">Progress:</span>
@@ -111,9 +111,9 @@ export default function GoalDetail() {
       </div>
 
       {/* Progress timeline */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="section-title">Progress Timeline</h2>
-        <button className="btn-primary" onClick={() => { setEditingEntry(null); setShowProgressForm(true); }}>
+        <button className="btn-primary justify-center sm:justify-start" onClick={() => { setEditingEntry(null); setShowProgressForm(true); }}>
           <Plus size={16} /> Log Today
         </button>
       </div>

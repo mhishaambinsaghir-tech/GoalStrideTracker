@@ -22,31 +22,31 @@ export default function Calendar() {
   return (
     <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-3xl font-bold text-gradient">Calendar</h1>
-        <p className="text-slate-400 mt-1">Your learning activity heatmap</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gradient">Calendar</h1>
+        <p className="text-slate-400 mt-1 text-sm sm:text-base">Your learning activity heatmap</p>
       </div>
 
       {/* Summary chips */}
-      <div className="flex gap-4 flex-wrap">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="card py-3 px-5 flex items-center gap-3">
-          <CalIcon size={18} className="text-primary-400" />
-          <div>
+          <CalIcon size={18} className="text-primary-400 flex-shrink-0" />
+          <div className="min-w-0">
             <p className="text-xs text-slate-500">Active Days</p>
-            <p className="font-bold text-slate-100">{totalDays}</p>
+            <p className="font-bold text-slate-100 truncate">{totalDays}</p>
           </div>
         </div>
         <div className="card py-3 px-5 flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-primary-500" />
-          <div>
+          <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
+          <div className="min-w-0">
             <p className="text-xs text-slate-500">Total Time</p>
-            <p className="font-bold text-slate-100">{Math.round(totalMinutes / 60)}h {totalMinutes % 60}m</p>
+            <p className="font-bold text-slate-100 truncate">{Math.round(totalMinutes / 60)}h {totalMinutes % 60}m</p>
           </div>
         </div>
         <div className="card py-3 px-5 flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-success-500" />
-          <div>
+          <div className="w-2 h-2 rounded-full bg-success-500 flex-shrink-0" />
+          <div className="min-w-0">
             <p className="text-xs text-slate-500">Goals Tracked</p>
-            <p className="font-bold text-slate-100">{goals.length}</p>
+            <p className="font-bold text-slate-100 truncate">{goals.length}</p>
           </div>
         </div>
       </div>
@@ -72,13 +72,13 @@ export default function Calendar() {
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between mb-1">
                   <span className="text-sm text-slate-300 truncate">{g.title}</span>
-                  <span className="text-xs font-semibold text-primary-400 ml-2">{g.completion_percent}%</span>
+                  <span className="text-xs font-semibold text-primary-400 ml-2 flex-shrink-0">{g.completion_percent}%</span>
                 </div>
                 <div className="progress-bar">
                   <div className="progress-fill" style={{ width: `${g.completion_percent}%` }} />
                 </div>
               </div>
-              <span className="text-xs text-slate-500 w-16 text-right flex-shrink-0">{g.entry_count} entries</span>
+              <span className="text-xs text-slate-500 w-12 sm:w-16 text-right flex-shrink-0">{g.entry_count} entries</span>
             </div>
           ))}
         </div>

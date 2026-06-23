@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard, Target, Calendar, BarChart2,
-  Sun, Moon, ChevronLeft, ChevronRight, Zap
+  Sun, Moon, ChevronLeft, ChevronRight, Zap, LogOut
 } from 'lucide-react';
 
 const links = [
@@ -13,9 +14,21 @@ const links = [
   { to: '/analytics', icon: BarChart2,       label: 'Analytics'  },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ onCloseMobile }) {
   const { dark, toggle } = useTheme();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    onCloseMobile?.();
+  };
+
+  const handleNavigate = () => {
+    onCloseMobile?.();
+  };
 
   return (
     <aside
@@ -45,6 +58,7 @@ export default function Sidebar() {
             key={to}
             to={to}
             end={to === '/'}
+            onClick={handleNavigate}
             className={({ isActive }) =>
               `nav-item ${isActive ? 'active' : ''} ${collapsed ? 'justify-center' : ''}`
             }
@@ -64,9 +78,18 @@ export default function Sidebar() {
           {dark ? <Sun size={18} /> : <Moon size={18} />}
           {!collapsed && <span>{dark ? 'Light mode' : 'Dark mode'}</span>}
         </button>
+
+        <button
+          onClick={handleLogout}
+          className={`nav-item w-full ${collapsed ? 'justify-center' : ''}`}
+        >
+          <LogOut size={18} />
+          {!collapsed && <span>Logout</span>}
+        </button>
+
         <button
           onClick={() => setCollapsed(c => !c)}
-          className={`nav-item w-full ${collapsed ? 'justify-center' : ''}`}
+          className={`nav-item w-full ${collapsed ? 'justify-center' : ''} hidden md:flex`}
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           {!collapsed && <span>Collapse</span>}

@@ -74,8 +74,8 @@ export default function Analytics() {
   return (
     <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-3xl font-bold text-gradient">Analytics</h1>
-        <p className="text-slate-400 mt-1">Deep-dive into your learning patterns</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gradient">Analytics</h1>
+        <p className="text-slate-400 mt-1 text-sm sm:text-base">Deep-dive into your learning patterns</p>
       </div>
 
       {goals.length === 0 ? (
@@ -85,7 +85,7 @@ export default function Analytics() {
       ) : (
         <div className="space-y-6">
           {/* Row 1 */}
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Goal Completion */}
             <div className="card">
               <h2 className="section-title mb-4">Goal Completion</h2>
@@ -145,7 +145,7 @@ export default function Analytics() {
                 <BarChart data={goalTimeData} layout="vertical" margin={{ left: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#2a2a3e" horizontal={false} />
                   <XAxis type="number" tick={{ fill: '#94a3b8', fontSize: 11 }} unit="h" />
-                  <YAxis type="category" dataKey="name" width={120} tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                  <YAxis type="category" dataKey="name" width={80} tick={{ fill: '#94a3b8', fontSize: 11 }} />
                   <Tooltip contentStyle={tooltipStyle} formatter={v => [`${v}h`, 'Hours']} />
                   <Bar dataKey="hours" fill="#10b981" radius={[0, 6, 6, 0]}>
                     {goalTimeData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
